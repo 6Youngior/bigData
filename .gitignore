@@ -1,0 +1,13 @@
+# 解压后的数据集（原始压缩包 data/数据.zip 保留在仓库）
+data/数据/
+
+# Python
+__pycache__/
+*.py[cod]
+
+# LaTeX 编译中间产物
+docs/*.aux
+docs/*.log
+docs/*.out
+docs/*.toc
+docs/*.synctex.gz

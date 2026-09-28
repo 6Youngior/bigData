@@ -1,0 +1,48 @@
+{
+  "definition": "Noncancelled active orders, Jan-Aug purchase timestamp, item price excluding freight, nonmissing category",
+  "base_sales_growth": 1.3984947114258692,
+  "base_order_growth": 1.3912002529701404,
+  "classifiable_categories_2017": 70,
+  "classifiable_categories_2018": 72,
+  "common_categories": 69,
+  "new_categories": 3,
+  "exited_categories": 1,
+  "small_base_categories": 28,
+  "zero_line_double_positive": 54,
+  "delivered_only_sensitivity": {
+    "sales_base": 1.427195903249415,
+    "order_base": 1.4183536387640712,
+    "same_quadrant": 68,
+    "total_categories": 69
+  },
+  "quadrants": {
+    "明星": {
+      "categories": 32,
+      "revenue_2018": 3256618.88,
+      "revenue_growth": 2.669593170724551,
+      "category_order_growth": 2.815270935960591,
+      "revenue_share_of_classified_2018": 0.4480909313913798
+    },
+    "金牛": {
+      "categories": 4,
+      "revenue_2018": 546093.83,
+      "revenue_growth": 1.2642527218192505,
+      "category_order_growth": 1.8350125944584383,
+      "revenue_share_of_classified_2018": 0.07513918635507813
+    },
+    "潜力": {
+      "categories": 3,
+      "revenue_2018": 604444.99,
+      "revenue_growth": 1.9833808833911148,
+      "category_order_growth": 1.2002341920374708,
+      "revenue_share_of_classified_2018": 0.08316795072561677
+    },
+    "瘦狗": {
+      "categories": 30,
+      "revenue_2018": 2854504.66,
+      "revenue_growth": 0.680398598256104,
+      "category_order_growth": 0.7237201091317607,
+      "revenue_share_of_classified_2018": 0.39276246281555494
+    }
+  }
+}
