@@ -3,6 +3,7 @@
 \usepackage[margin=2.25cm]{geometry}
 \usepackage{booktabs,graphicx,float,array,xcolor,longtable}
 \usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={电商二级品类经营矩阵分析},pdfauthor={《大数据中的案例实务》第一次作业}}
 \usepackage{caption}
 \captionsetup{font=small,labelfont=bf}
 \setlength{\parindent}{2em}
@@ -12,8 +13,8 @@
 
 \title{\bfseries 电商二级品类经营矩阵分析\\[0.3em]
 \large 2018 年 1—8 月与 2017 年同期对比}
-\author{大数据案例实务分析课程作业}
-\date{2026 年 9 月}
+\author{《大数据中的案例实务》第一次作业}
+\date{2026 年 10 月}
 
 \begin{document}
 \pagestyle{plain}
@@ -25,8 +26,8 @@
 2018 年有品类信息的商品销售额为 \SalesEighteen{} 万 BRL，
 同比 \SalesGrowth{}；涉及 \OrdersEighteen{} 笔订单，
 同比 \OrderGrowth{}。69 个两期均有销售的品类中，
-明星类占当年销售额的 \StarShare{}，瘦狗类仍占 \DogShare{}。
-因此，资源配置既要考虑增长速度，也要考虑现有销售规模。
+明星类与瘦狗类分别占 2018 年有品类信息商品销售额的 \StarShare{} 和 \DogShare{}。
+增速低于整体水平的品类仍有较大销售规模，经营决策需同时考虑增长速度与销售规模。
 \end{abstract}
 
 \begin{table}[H]
@@ -47,11 +48,13 @@
 \section{数据与方法}
 
 分析使用提供的 Olist 订单、订单明细、商品和品类翻译四张表。
+品类划分依据商品表中的原始分类，中文名称取自品类翻译表。
+金额单位记为 BRL（巴西雷亚尔）\footnote{原始工作簿未单独标明币种，本文按 Olist 数据的巴西市场背景标注金额单位，未作汇率换算。数据背景见\href{https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce}{Olist 公开数据集说明}。}。
 根据订单表记录的下单时间，分别提取 2017 年和 2018 年
 1 月 1 日至 8 月 31 日的订单，两期均为 243 天。保留
 \texttt{approved}、\texttt{processing}、\texttt{invoiced}、
 \texttt{shipped} 和 \texttt{delivered} 状态，排除仅创建、缺货和已取消的订单。
-由于 2018 年 8 月的部分订单在数据截止时尚未送达，仅统计已送达订单会低估当期下单金额。
+2018 年 8 月仍有已发货或已开票的订单，仅统计已送达订单会遗漏这部分下单商品。
 
 本文所称品类销售额为下单商品在订单明细中 \texttt{price} 的合计，
 不含运费，也未扣除成本，不能等同于已确认收入；
@@ -60,9 +63,9 @@
 因而各品类订单量之和可能超过平台去重订单数。
 
 剔除品类信息缺失的商品后，2017 年和 2018 年的商品销售额分别为
-\SalesSeventeen{}/\SalesEighteen{} 万 BRL，去重订单为
-\OrdersSeventeen{}/\OrdersEighteen{} 单。缺失品类金额分别占同期有效订单
-商品金额的 \MissingShareSeventeen{}/\MissingShareEighteen{}。
+\SalesSeventeen{} 万 BRL 和 \SalesEighteen{} 万 BRL，去重订单分别为
+\OrdersSeventeen{} 单和 \OrdersEighteen{} 单。缺失品类商品金额占同期有效订单
+商品金额的比例分别为 \MissingShareSeventeen{} 和 \MissingShareEighteen{}。
 分析以原表的品类字段为单位，按作业要求称为二级品类。
 两期均有销售的 69 类纳入矩阵；2018 年新增 3 类、退出 1 类，单独列示。
 
@@ -77,7 +80,7 @@
 \input{tables/latex/report_audit.tex}
 \end{tabular}
 \end{table}
-\noindent 有品类信息的订单数小于有效订单数，差额来自商品品类信息缺失。
+\noindent 若一笔订单中的商品均缺少品类信息，该订单不计入品类分析，因此有品类信息的订单数小于有效订单数。
 订单号和商品号在各自主表中均不重复；分析脚本还检查了订单明细重复、
 商品档案缺失、非正价格和金额汇总。
 
@@ -90,14 +93,14 @@
 \item 计算同期有品类信息商品的整体增速，以其为分界划分品类象限。2017 年不足 30 单的品类仍参与分类，在附录中单独标记。
 \end{enumerate}
 
-对品类 $c$，销售额同比 $g_R^c=R_{2018}^c/R_{2017}^c-1$，
-订单量同比 $g_O^c=O_{2018}^c/O_{2017}^c-1$。
-矩阵分别以\textbf{整体销售额同比 \SalesGrowth{} 和订单量同比 \OrderGrowth{}}
-为横、纵轴分界。若以 0\% 为分界，69 类中有 54 类集中于双增长象限；
-采用整体增速可进一步区分各品类的相对增长水平。
-题目配图的纵轴标为“利润率”，但文字要求使用“订单量同比增长率”，
-且原始数据缺少计算利润率所需的成本数据。因此，矩阵纵轴采用订单量同比，
-象限位置及名称沿用配图。文中的“高”“低”仅表示相对于整体增速的比较结果。
+设 $R_y^c$ 和 $O_y^c$ 分别为品类 $c$ 在 $y$ 年 1—8 月的销售额和去重订单量，两项同比按下式计算：
+\[
+g_R^c=\frac{R_{2018}^c}{R_{2017}^c}-1,\qquad
+g_O^c=\frac{O_{2018}^c}{O_{2017}^c}-1.
+\]
+单均商品金额为品类销售额除以该品类的去重订单数，用于分析销售额与订单量增长的差异。
+矩阵以\textbf{整体销售额同比 \SalesGrowth{} 和订单量同比 \OrderGrowth{}}
+为两条分界线，将品类分为四类，具体标准见表 3。
 
 \begin{table}[H]
 \centering
@@ -145,17 +148,17 @@
 \section{分类结果与经营建议}
 
 \noindent\textbf{明星品类。}
-\StarCount{} 类，2018 年销售额 \StarSales{} 万 BRL、占 \StarShare{}；
+共 \StarCount{} 类，2018 年销售额 \StarSales{} 万 BRL，占 \StarShare{}；
 销售额同比为 \StarSalesGrowth{}，品类订单同比为 \StarOrderGrowth{}，
 均高于整体水平。
 健康美妆销售额 77.0 万 BRL（销售同比 +211.2\%、订单 +210.7\%），
-腕表礼品为 70.8 万 BRL（+243.4\%、+335.1\%）。
-建议保障畅销商品库存与配送能力，并依据投放效果决定增量资源。
+腕表礼品为 70.8 万 BRL（销售同比 +243.4\%、订单同比 +335.1\%）。
+建议优先保障畅销商品库存与配送能力，并根据推广效果安排新增投入。
 腕表礼品的订单增速高于销售额增速，单均商品金额约下降 21.1\%，
-应结合商品结构和促销费用观察增长质量。
+需进一步检查商品价格结构和优惠力度。
 
 \noindent\textbf{金牛品类。}
-\CowCount{} 类，销售额 \CowSales{} 万 BRL、占 \CowShare{}；
+共 \CowCount{} 类，销售额 \CowSales{} 万 BRL，占 \CowShare{}；
 品类订单同比 \CowOrderGrowth{} 高于整体水平，而销售同比 \CowSalesGrowth{} 低于整体水平。
 电脑及配件贡献 50.2 万 BRL，占金牛类销售额约 92.0\%；
 其订单同比 +180.8\%、销售同比 +128.8\%，单均商品金额约下降 18.5\%。
@@ -164,18 +167,18 @@
 并测试配件搭配销售对单均商品金额的影响。
 
 \noindent\textbf{潜力品类。}
-\PotentialCount{} 类，销售额 \PotentialSales{} 万 BRL、占 \PotentialShare{}；
+共 \PotentialCount{} 类，销售额 \PotentialSales{} 万 BRL，占 \PotentialShare{}；
 销售同比 \PotentialSalesGrowth{} 高于整体水平，订单同比 \PotentialOrderGrowth{} 低于整体水平。
-家居日用销售 39.8 万 BRL（销售 +203.3\%、订单 +138.5\%），
+家居日用销售额为 39.8 万 BRL（销售同比 +203.3\%、订单同比 +138.5\%），
 订单增速仅比整体分界线低 0.6 个百分点；
-手机通讯销售 18.0 万 BRL（+195.9\%、+108.0\%），
-单均商品金额约提高 42.3\%。这类品类宜保持有效商品组合，
-并检验曝光与购买转化的改善能否带来更多订单，避免仅凭销售额增速扩大投放。
+手机通讯销售额为 18.0 万 BRL（销售同比 +195.9\%、订单同比 +108.0\%），
+单均商品金额约提高 42.3\%。建议先检查商品结构及单均金额变化，
+再通过小范围推广测试争取更多订单，并观察购买转化率的变化。
 
 \noindent\textbf{瘦狗品类。}
-\DogCount{} 类，销售额 \DogSales{} 万 BRL、占 \DogShare{}；
-销售与订单同比分别为 \DogSalesGrowth{}/\DogOrderGrowth{}，
-虽低于整体水平，但仍为正增长。
+共 \DogCount{} 类，销售额 \DogSales{} 万 BRL，占 \DogShare{}；
+该象限合计销售额与品类订单量同比分别为 \DogSalesGrowth{} 和 \DogOrderGrowth{}，
+均低于整体水平，但仍为正增长。
 床品卫浴餐桌用品、运动休闲合计销售额约 106.8 万 BRL，
 仍具有较大的销售规模，宜先优化商品组合及促销方式；
 潮流新奇好物销售 23.1 万 BRL、销售同比 +8.9\%、订单同比 +14.3\%，
@@ -191,7 +194,7 @@
 \midrule
 明星 & 保障畅销商品库存和配送能力，依据投放效果配置资源 & 缺货率、履约时长、投放回报 \\
 金牛 & 检查低价商品占比与优惠力度，测试搭配销售 & 单均商品金额、促销费率、毛利率 \\
-潜力 & 保留高价值商品组合，改善曝光与购买转化 & 品类订单增长、转化率、单均商品金额 \\
+潜力 & 检查商品结构，通过小范围推广测试争取更多订单 & 品类订单增长、转化率、单均商品金额 \\
 瘦狗 & 保障有规模的基础品类，核查低增速商品的促销投入 & 单品销售贡献、促销费用、毛利率 \\
 \bottomrule
 \end{tabular}
@@ -219,7 +222,7 @@
 
 \section{结论与适用范围}
 
-四象限矩阵显示，明星品类贡献了较多增量，但增速低于整体水平的瘦狗品类
+明星品类贡献了可比品类销售额增量的 \StarIncrementShare{}，增速低于整体水平的瘦狗品类
 仍占 2018 年销售额的 \DogShare{}。金牛与潜力合计仅 7 类，
 其销售额与订单量增速差异需要结合单均商品金额分别分析。
 因此，品类资源配置应同时考虑相对增速、现有规模和上一年的订单基数。
@@ -228,11 +231,12 @@
 \CommonRevenueShare{}。其中 28 类的 2017 年基数不足 30 单，
 仅占 2018 年有品类信息商品销售额的 \SmallBaseShare{}；
 附录中以星号标记，解释其增速时仍需参考销售额。只保留“已送达”订单时，
-69 类中 68 类象限不变，仅“大众通俗书籍”跨线。
+69 类中 68 类象限不变，仅“大众通俗书籍”由金牛类转为瘦狗类。
 原始数据缺少成本、毛利、广告费用和竞品信息，矩阵不能用于判断
 利润率或市场竞争地位。69 个可比品类的具体计算结果列于附录。
 
-新增和退出品类不计算同比，金额远小于主要品类，对上述判断影响有限。
+新增和退出仅指两期动销记录的差异，不代表商品实际上架或下架。
+这四个品类单独列示，不纳入同比矩阵；其金额远小于主要品类，对上述判断影响有限。
 其金额和订单数见表~\ref{tab:lifecycle}。
 
 \begin{table}[H]
@@ -252,10 +256,9 @@
 \appendix
 \section{全部可比品类的计算结果}
 
-表~\ref{tab:all-categories} 列出全部 69 个两期有销售的品类，与矩阵图一一对应。
+表~\ref{tab:all-categories} 列出全部 69 个两期有销售的品类，包括矩阵图坐标范围之外的品类。
 按象限、2018 年销售额降序排列；$^{*}$ 表示 2017 年不足 30 单，
 此类增速容易受小基数影响，阅读时应同时参考 2018 年金额和原始订单数。
-小额品类在本表使用 BRL 展示，以避免四舍五入为 0.0 万 BRL。
 
 \footnotesize
 \setlength{\tabcolsep}{3pt}

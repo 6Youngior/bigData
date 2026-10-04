@@ -46,6 +46,10 @@ def main() -> None:
             / q18.classified_revenue
         ).lstrip("+"),
         "CommonRevenueShare": percent(comparable.revenue_2018.sum() / q18.classified_revenue).lstrip("+"),
+        "StarIncrementShare": percent(
+            (quadrants.loc["明星", "revenue_2018"] - quadrants.loc["明星", "revenue_2017"])
+            / (comparable.revenue_2018.sum() - comparable.revenue_2017.sum())
+        ).lstrip("+"),
     }
     for name, key in [("Star", "明星"), ("Cow", "金牛"), ("Potential", "潜力"), ("Dog", "瘦狗")]:
         row = quadrants.loc[key]
